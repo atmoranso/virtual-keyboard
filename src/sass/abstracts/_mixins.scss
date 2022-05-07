@@ -1,0 +1,36 @@
+@mixin flexColumn($justify: null, $align: null) {
+    display: flex;
+    flex-direction: column;
+    @if $justify {
+        justify-content: $justify;
+    }
+    @if $align {
+        align-items: $align;
+    }
+}
+@mixin flexRow($justify: null, $align: null) {
+    display: flex;
+    flex-direction: row;
+    @if $justify {
+        justify-content: $justify;
+    }
+    @if $align {
+        align-items: $align;
+    }
+}
+
+@mixin font-source-sans($size: null, $color: null, $weight: null, $lh: false) {
+    font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+    @if $size {
+        font-size: $size;
+    }
+    @if $colour {
+        color: $color;
+    }
+    @if $weight {
+        font-weight: $weight;
+    }
+    @if $lh {
+        line-height: $lh;
+    }
+}

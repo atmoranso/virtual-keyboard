@@ -24,7 +24,7 @@
     @if $size {
         font-size: $size;
     }
-    @if $colour {
+    @if $color {
         color: $color;
     }
     @if $weight {

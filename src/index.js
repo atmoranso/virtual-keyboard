@@ -1,3 +1,5 @@
 import './sass/style.scss';
+import Keyboard from './scripts/keyboard';
 
-console.log('Hello World!');
+const keyboard = new Keyboard();
+keyboard.start();

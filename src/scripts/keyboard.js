@@ -41,7 +41,8 @@ export default class Keyboard {
   }
   keyPrint(keyCode) {
     this.textArea.focus();
-    this.textArea.value += keys[keyCode][this.language].key;
+    if (this.render.capsLock) this.textArea.value += keys[keyCode][this.language].key.toUpperCase();
+    else this.textArea.value += keys[keyCode][this.language].key;
     this.textArea.selectionStart = this.textArea.value.length;
   }
   doFunctionKey(keyCode) {
@@ -50,7 +51,9 @@ export default class Keyboard {
     }
     if (keyCode == 'CapsLock') {
       this.render.capsLock = this.render.capsLock ? false : true;
-      this.render.renderHTML();
+      this.keyboard.remove();
+      this.render.renderKeyboard();
+      this.keyboard = this.render.keyboard;
     }
   }
 }

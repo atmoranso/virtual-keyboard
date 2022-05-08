@@ -41,13 +41,26 @@ export default class Keyboard {
   }
   keyPrint(keyCode) {
     this.textArea.focus();
-    if (this.render.capsLock) this.textArea.value += keys[keyCode][this.language].key.toUpperCase();
-    else this.textArea.value += keys[keyCode][this.language].key;
-    this.textArea.selectionStart = this.textArea.value.length;
+    let newKey;
+    if (this.render.capsLock) newKey = keys[keyCode][this.language].key.toUpperCase();
+    else newKey = keys[keyCode][this.language].key;
+    let newCursorPlace = this.textArea.selectionStart;
+    let firstStrPart = this.textArea.value.slice(0, this.textArea.selectionStart);
+    let secondStrPart = this.textArea.value.slice(this.textArea.selectionStart);
+    this.textArea.value = firstStrPart + newKey + secondStrPart;
+    // this.textArea.selectionStart = newCursorPlace + 1;
+    this.textArea.selectionEnd = newCursorPlace + 1;
   }
   doFunctionKey(keyCode) {
     if (keyCode == 'Backspace') {
       this.textArea.value = this.textArea.value.slice(0, this.textArea.value.length - 1);
+    }
+    if (keyCode == 'Delete') {
+      let newCursorPlace = this.textArea.selectionStart;
+      let firstStrPart = this.textArea.value.slice(0, this.textArea.selectionStart);
+      let secondStrPart = this.textArea.value.slice(this.textArea.selectionStart + 1);
+      this.textArea.value = firstStrPart + secondStrPart;
+      this.textArea.selectionEnd = newCursorPlace;
     }
     if (keyCode == 'CapsLock') {
       this.render.capsLock = this.render.capsLock ? false : true;

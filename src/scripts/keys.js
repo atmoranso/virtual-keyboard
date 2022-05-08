@@ -87,7 +87,7 @@ export const keys = {
     en: { key: 'Tab', keyUp: 'Tab' },
     ru: { key: 'Tab', keyUp: 'Tab' },
     isFunc: true,
-    width: '45px',
+    width: '43px',
   },
   KeyQ: {
     en: { key: 'q', keyUp: 'Q' },
@@ -171,7 +171,7 @@ export const keys = {
     en: { key: 'Del', keyUp: 'Del' },
     ru: { key: 'Del', keyUp: 'Del' },
     isFunc: true,
-    width: '45px',
+    width: '43px',
   },
   CapsLock: {
     en: { key: 'CapsLock', keyUp: 'CapsLock' },
@@ -330,14 +330,14 @@ export const keys = {
     width: '90px',
   },
   ControlLeft: {
-    en: { key: 'Control', keyUp: 'Control' },
-    ru: { key: 'Control', keyUp: 'Control' },
+    en: { key: 'Ctrl', keyUp: 'Ctrl' },
+    ru: { key: 'Ctrl', keyUp: 'Ctrl' },
     isFunc: true,
     width: '40px',
   },
   MetaLeft: {
-    en: { key: 'Meta', keyUp: 'Meta' },
-    ru: { key: 'Meta', keyUp: 'Meta' },
+    en: { key: 'Win', keyUp: 'Win' },
+    ru: { key: 'Win', keyUp: 'Win' },
     isFunc: true,
     width: '40px',
   },
@@ -378,8 +378,8 @@ export const keys = {
     width: '40px',
   },
   ControlRight: {
-    en: { key: 'Control', keyUp: 'Control' },
-    ru: { key: 'Control', keyUp: 'Control' },
+    en: { key: 'Ctrl', keyUp: 'Ctrl' },
+    ru: { key: 'Ctrl', keyUp: 'Ctrl' },
     isFunc: true,
     width: '40px',
   },

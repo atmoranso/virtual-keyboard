@@ -2,23 +2,26 @@ export default class Render {
   wrapper;
   keyboard;
   lang;
+  textArea;
+  capsLock = false;
+  keys;
 
-  constructor(lang) {
+  constructor(lang, keys) {
     this.lang = lang;
+    this.keys = keys;
   }
-  renderHTML(keys) {
+  renderHTML() {
     let title;
-    let textArea;
 
     this.wrapper = this.createElement('DIV', 'app__wrapper');
     document.body.appendChild(this.wrapper);
     title = this.createElement('H1', 'app__title', 'RSS Virtual Keyboard');
     this.wrapper.appendChild(title);
-    textArea = this.createElement('TEXTAREA', 'app__text-block', { rows: '10', cols: '100' });
-    this.wrapper.appendChild(textArea);
-    this.renderKeyboard(keys);
+    this.textArea = this.createElement('TEXTAREA', 'app__text-block', { rows: '10', cols: '100', autofocus: true });
+    this.wrapper.appendChild(this.textArea);
+    this.renderKeyboard();
   }
-  renderKeyboard(keys) {
+  renderKeyboard() {
     this.keyboard = this.createElement('DIV', 'app__keyboard keyboard');
     this.wrapper.appendChild(this.keyboard);
 
@@ -28,16 +31,21 @@ export default class Render {
     const keysInRow = [14, 15, 13, 13, 9];
     let row = 0;
     let keyNum = 1;
-    for (const key in keys) {
+
+    for (const key in this.keys) {
       if (keyNum > keysInRow[row]) {
         keyRow = this.createElement('DIV', 'keyboard__row');
         this.keyboard.appendChild(keyRow);
         keyNum = 1;
         row++;
       }
+      let keySymb;
+      if (this.capsLock === true && this.keys[key].isFunc !== true) keySymb = this.keys[key][this.lang].key.toUpperCase();
+      else keySymb = this.keys[key][this.lang].key;
 
-      let keyBlock = this.createElement('DIV', 'keyboard__key', keys[key][this.lang].key);
-      keyBlock.style.width = keys[key].width;
+      let keyBlock = this.createElement('DIV', 'keyboard__key', keySymb);
+      keyBlock.style.width = this.keys[key].width;
+      keyBlock.dataset.code = key;
       keyRow.appendChild(keyBlock);
       keyNum++;
     }

@@ -8,6 +8,7 @@ export default class Render {
   textArea;
 
   capsLock = false;
+
   isShift = false;
 
   keys;
@@ -31,14 +32,16 @@ export default class Render {
     this.renderKeyboard();
     this.renderFooter();
   }
+
   renderFooter() {
-    let footer = Render.createElement(
+    const footer = Render.createElement(
       'DIV',
       'app__footer',
-      'Клавиатура создана в операционной системе Windows<br>Для переключения языка комбинация: левыe ctrl + alt'
+      'Клавиатура создана в операционной системе Windows<br>Для переключения языка комбинация: левыe ctrl + alt',
     );
     this.wrapper.appendChild(footer);
   }
+
   renderKeyboard() {
     this.keyboard = Render.createElement('DIV', 'app__keyboard keyboard');
     this.textArea.after(this.keyboard);
@@ -68,16 +71,14 @@ export default class Render {
         } else {
           keySymb = this.keys[key][this.lang].key.toUpperCase();
         }
-      } else {
-        if (this.isShift) {
-          if (this.keys[key][this.lang].keyUp !== null) {
-            keySymb = this.keys[key][this.lang].keyUp;
-          } else {
-            keySymb = this.keys[key][this.lang].key.toUpperCase();
-          }
+      } else if (this.isShift) {
+        if (this.keys[key][this.lang].keyUp !== null) {
+          keySymb = this.keys[key][this.lang].keyUp;
         } else {
-          keySymb = this.keys[key][this.lang].key;
+          keySymb = this.keys[key][this.lang].key.toUpperCase();
         }
+      } else {
+        keySymb = this.keys[key][this.lang].key;
       }
 
       const keyBlock = Render.createElement('DIV', 'keyboard__key', keySymb);
@@ -93,17 +94,24 @@ export default class Render {
   }
 
   static createElement(tag, cssClass, innerHTML, properties) {
+    let propertiesArr = properties;
+    let innerHTMLArr = innerHTML;
     const element = document.createElement(tag);
     element.className = cssClass;
-    if (typeof innerHTML === 'object') {
-      properties = innerHTML;
-      innerHTML = undefined;
+    if (typeof innerHTMLArr === 'object') {
+      propertiesArr = innerHTMLArr;
+      innerHTMLArr = undefined;
     }
-    if (innerHTML !== undefined) element.innerHTML = innerHTML;
-    if (properties !== undefined) {
-      for (const key in properties) {
-        element[key] = properties[key];
-      }
+
+    if (innerHTMLArr !== undefined) element.innerHTML = innerHTMLArr;
+    if (propertiesArr !== undefined) {
+      // for (const key in propertiesArr) {
+      //   element[key] = propertiesArr[key];
+      // }
+
+      Object.keys(propertiesArr).forEach((key) => {
+        element[key] = propertiesArr[key];
+      });
     }
     return element;
   }

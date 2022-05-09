@@ -11,9 +11,13 @@ export default class Keyboard {
   textArea;
 
   ShiftLeft = false;
+
   ShiftRight = false;
+
   isAltLeft = false;
+
   isControlLeft = false;
+
   isShiftClicked = false;
 
   constructor() {
@@ -41,13 +45,14 @@ export default class Keyboard {
     if (lang) this.language = lang;
     else this.language = 'en';
   }
+
   mouseDownHandler(e) {
     e.preventDefault();
 
     if (e.target.dataset.code === 'ShiftLeft' || e.target.dataset.code === 'ShiftRight') {
       this.isShiftClicked = true;
     }
-    let event = new KeyboardEvent('keydown', {
+    const event = new KeyboardEvent('keydown', {
       code: e.target.dataset.code,
     });
 
@@ -55,15 +60,16 @@ export default class Keyboard {
     // e.target.addEventListener('mouseout', this.mouseUpHandler.bind(this));
     document.dispatchEvent(event);
   }
+
   mouseUpHandler(e) {
     e.preventDefault();
     if (
-      (e.target.dataset.code === 'ShiftLeft' || e.target.dataset.code === 'ShiftRight') &&
-      !this.isShiftClicked
+      (e.target.dataset.code === 'ShiftLeft' || e.target.dataset.code === 'ShiftRight')
+      && !this.isShiftClicked
     ) {
       return;
     }
-    let event = new KeyboardEvent('keyup', {
+    const event = new KeyboardEvent('keyup', {
       code: e.target.dataset.code,
     });
     // e.target.removeEventListener('mouseup', this.mouseUpHandler);
@@ -71,14 +77,14 @@ export default class Keyboard {
     document.dispatchEvent(event);
     this.isShiftClicked = false;
   }
+
   keyDownHandler(e) {
     e.preventDefault();
 
     if (keys.hasOwnProperty.call(keys, e.code) && keys[e.code].isFunc === false) {
       this.keyPrint(e.code);
     } else if (e.repeat !== true) this.doFunctionKey(e.code);
-    if (e.repeat == true && (e.code === 'Backspace' || e.code === 'Delete' || e.code === 'Enter'))
-      this.doFunctionKey(e.code);
+    if (e.repeat === true && (e.code === 'Backspace' || e.code === 'Delete' || e.code === 'Enter')) this.doFunctionKey(e.code);
     const key = document.querySelector(`[data-code="${e.code}"]`);
 
     if (key) key.classList.add('press');
@@ -89,10 +95,10 @@ export default class Keyboard {
     const key = document.querySelector(`[data-code="${e.code}"]`);
     if (key) key.classList.remove('press');
     if (
-      (e.code === 'ControlLeft' && this.isAltLeft) ||
-      (e.code === 'AltLeft' && this.isControlLeft)
+      (e.code === 'ControlLeft' && this.isAltLeft)
+      || (e.code === 'AltLeft' && this.isControlLeft)
     ) {
-      this.language = this.language == 'en' ? 'ru' : 'en';
+      this.language = this.language === 'en' ? 'ru' : 'en';
       this.render.lang = this.language;
       this.saveLanguage();
       this.keyboard.remove();
@@ -111,6 +117,7 @@ export default class Keyboard {
       this.shiftHandler();
     }
   }
+
   keyPrint(keyCode) {
     this.textArea.focus();
     let newKey;
@@ -124,16 +131,14 @@ export default class Keyboard {
       } else {
         newKey = keys[keyCode][this.language].key.toUpperCase();
       }
-    } else {
-      if (this.render.isShift) {
-        if (keys[keyCode][this.language].keyUp !== null) {
-          newKey = keys[keyCode][this.language].keyUp;
-        } else {
-          newKey = keys[keyCode][this.language].key.toUpperCase();
-        }
+    } else if (this.render.isShift) {
+      if (keys[keyCode][this.language].keyUp !== null) {
+        newKey = keys[keyCode][this.language].keyUp;
       } else {
-        newKey = keys[keyCode][this.language].key;
+        newKey = keys[keyCode][this.language].key.toUpperCase();
       }
+    } else {
+      newKey = keys[keyCode][this.language].key;
     }
     if (keyCode === 'Tab') newKey = '\t';
     if (keyCode === 'Enter') newKey = '\n';
@@ -185,6 +190,7 @@ export default class Keyboard {
       this.shiftHandler();
     }
   }
+
   shiftHandler() {
     this.render.isShift = !this.render.isShift;
     this.keyboard.remove();

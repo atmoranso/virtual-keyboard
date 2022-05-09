@@ -49,23 +49,28 @@ export default class Keyboard {
     const key = document.querySelector(`[data-code="${e.code}"]`);
     if (key) key.classList.remove('press');
   }
-
   keyPrint(keyCode) {
     this.textArea.focus();
     let newKey;
     if (this.render.capsLock) newKey = keys[keyCode][this.language].key.toUpperCase();
     else newKey = keys[keyCode][this.language].key;
+    if (keyCode === 'Tab') newKey = '\t';
     const newCursorPlace = this.textArea.selectionStart;
     const firstStrPart = this.textArea.value.slice(0, this.textArea.selectionStart);
     const secondStrPart = this.textArea.value.slice(this.textArea.selectionStart);
     this.textArea.value = firstStrPart + newKey + secondStrPart;
+    console.log(this.textArea.value);
     // this.textArea.selectionStart = newCursorPlace + 1;
     this.textArea.selectionEnd = newCursorPlace + 1;
   }
 
   doFunctionKey(keyCode) {
     if (keyCode === 'Backspace') {
-      this.textArea.value = this.textArea.value.slice(0, this.textArea.value.length - 1);
+      const newCursorPlace = this.textArea.selectionStart;
+      const firstStrPart = this.textArea.value.slice(0, this.textArea.selectionStart - 1);
+      const secondStrPart = this.textArea.value.slice(this.textArea.selectionStart);
+      this.textArea.value = firstStrPart + secondStrPart;
+      this.textArea.selectionEnd = newCursorPlace - 1;
     }
     if (keyCode === 'Delete') {
       const newCursorPlace = this.textArea.selectionStart;

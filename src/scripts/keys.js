@@ -86,7 +86,7 @@ export default {
   Tab: {
     en: { key: 'Tab', keyUp: 'Tab' },
     ru: { key: 'Tab', keyUp: 'Tab' },
-    isFunc: true,
+    isFunc: false,
     width: '43px',
   },
   KeyQ: {

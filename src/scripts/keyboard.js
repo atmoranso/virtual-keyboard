@@ -56,8 +56,7 @@ export default class Keyboard {
       code: e.target.dataset.code,
     });
 
-    // e.target.addEventListener('mouseup', this.mouseUpHandler.bind(this));
-    // e.target.addEventListener('mouseout', this.mouseUpHandler.bind(this));
+
     document.dispatchEvent(event);
   }
 
@@ -72,8 +71,7 @@ export default class Keyboard {
     const event = new KeyboardEvent('keyup', {
       code: e.target.dataset.code,
     });
-    // e.target.removeEventListener('mouseup', this.mouseUpHandler);
-    // e.target.removeEventListener('mouseout', this.mouseUpHandler);
+
     document.dispatchEvent(event);
     this.isShiftClicked = false;
   }

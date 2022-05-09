@@ -105,9 +105,7 @@ export default class Render {
 
     if (innerHTMLArr !== undefined) element.innerHTML = innerHTMLArr;
     if (propertiesArr !== undefined) {
-      // for (const key in propertiesArr) {
-      //   element[key] = propertiesArr[key];
-      // }
+
 
       Object.keys(propertiesArr).forEach((key) => {
         element[key] = propertiesArr[key];

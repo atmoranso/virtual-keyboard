@@ -8,6 +8,7 @@ export default class Render {
   textArea;
 
   capsLock = false;
+  isShift = false;
 
   keys;
 
@@ -28,11 +29,19 @@ export default class Render {
     });
     this.wrapper.appendChild(this.textArea);
     this.renderKeyboard();
+    this.renderFooter();
   }
-
+  renderFooter() {
+    let footer = Render.createElement(
+      'DIV',
+      'app__footer',
+      'Клавиатура создана в операционной системе Windows<br>Для переключения языка комбинация: левыe ctrl + alt'
+    );
+    this.wrapper.appendChild(footer);
+  }
   renderKeyboard() {
     this.keyboard = Render.createElement('DIV', 'app__keyboard keyboard');
-    this.wrapper.appendChild(this.keyboard);
+    this.textArea.after(this.keyboard);
 
     let keyRow = Render.createElement('DIV', 'keyboard__row');
     this.keyboard.appendChild(keyRow);
@@ -41,23 +50,6 @@ export default class Render {
     let row = 0;
     let keyNum = 1;
 
-    // for (const key in this.keys) {
-    //   if (keyNum > keysInRow[row]) {
-    //     keyRow = this.createElement('DIV', 'keyboard__row');
-    //     this.keyboard.appendChild(keyRow);
-    //     keyNum = 1;
-    //     row++;
-    //   }
-    //   let keySymb;
-    //   if (this.capsLock === true && this.keys[key].isFunc !== true) keySymb = this.keys[key][this.lang].key.toUpperCase();
-    //   else keySymb = this.keys[key][this.lang].key;
-
-    //   const keyBlock = this.createElement('DIV', 'keyboard__key', keySymb);
-    //   keyBlock.style.width = this.keys[key].width;
-    //   keyBlock.dataset.code = key;
-    //   keyRow.appendChild(keyBlock);
-    //   keyNum++;
-    // }
     Object.keys(this.keys).forEach((key) => {
       if (keyNum > keysInRow[row]) {
         keyRow = Render.createElement('DIV', 'keyboard__row');
@@ -67,10 +59,32 @@ export default class Render {
       }
       let keySymb;
       if (this.capsLock === true && this.keys[key].isFunc !== true) {
-        keySymb = this.keys[key][this.lang].key.toUpperCase();
-      } else keySymb = this.keys[key][this.lang].key;
+        if (this.isShift) {
+          if (this.keys[key][this.lang].keyUp !== null) {
+            keySymb = this.keys[key][this.lang].keyUp;
+          } else {
+            keySymb = this.keys[key][this.lang].key;
+          }
+        } else {
+          keySymb = this.keys[key][this.lang].key.toUpperCase();
+        }
+      } else {
+        if (this.isShift) {
+          if (this.keys[key][this.lang].keyUp !== null) {
+            keySymb = this.keys[key][this.lang].keyUp;
+          } else {
+            keySymb = this.keys[key][this.lang].key.toUpperCase();
+          }
+        } else {
+          keySymb = this.keys[key][this.lang].key;
+        }
+      }
 
       const keyBlock = Render.createElement('DIV', 'keyboard__key', keySymb);
+      if (key === 'CapsLock' && this.capsLock === true) {
+        keyBlock.classList.add('caps-on');
+      }
+      if (key === 'CapsLock' && this.capsLock === false) keyBlock.classList.remove('caps-on');
       keyBlock.style.width = this.keys[key].width;
       keyBlock.dataset.code = key;
       keyRow.appendChild(keyBlock);

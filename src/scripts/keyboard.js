@@ -56,7 +56,6 @@ export default class Keyboard {
       code: e.target.dataset.code,
     });
 
-
     document.dispatchEvent(event);
   }
 

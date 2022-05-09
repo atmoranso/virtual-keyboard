@@ -77,6 +77,8 @@ export default class Keyboard {
     if (keys.hasOwnProperty.call(keys, e.code) && keys[e.code].isFunc === false) {
       this.keyPrint(e.code);
     } else if (e.repeat !== true) this.doFunctionKey(e.code);
+    if (e.repeat == true && (e.code === 'Backspace' || e.code === 'Delete' || e.code === 'Enter'))
+      this.doFunctionKey(e.code);
     const key = document.querySelector(`[data-code="${e.code}"]`);
 
     if (key) key.classList.add('press');
@@ -146,9 +148,9 @@ export default class Keyboard {
   doFunctionKey(keyCode) {
     if (keyCode === 'Backspace') {
       const newCursorPlace = this.textArea.selectionStart;
-      const firstStrPart = this.textArea.value.slice(0, this.textArea.selectionStart - 1);
+      const firstStrPart = this.textArea.value.slice(0, this.textArea.selectionStart);
       const secondStrPart = this.textArea.value.slice(this.textArea.selectionStart);
-      this.textArea.value = firstStrPart + secondStrPart;
+      this.textArea.value = firstStrPart.slice(0, firstStrPart.length - 1) + secondStrPart;
       this.textArea.selectionEnd = newCursorPlace - 1;
     }
     if (keyCode === 'Delete') {

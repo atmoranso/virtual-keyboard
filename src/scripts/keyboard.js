@@ -10,6 +10,10 @@ export default class Keyboard {
 
   textArea;
 
+  isShift = false;
+  isAltLeft = false;
+  isControlLeft = false;
+
   constructor() {
     this.loadLanguage();
     this.render = new Render(this.language, keys);
@@ -20,7 +24,7 @@ export default class Keyboard {
     this.keyboard = this.render.keyboard;
     this.textArea = this.render.textArea;
     document.addEventListener('keydown', this.keyDownHandler.bind(this));
-    document.addEventListener('keyup', this.keyUpHandler);
+    document.addEventListener('keyup', this.keyUpHandler.bind(this));
   }
 
   saveLanguage() {
@@ -48,6 +52,24 @@ export default class Keyboard {
     e.preventDefault();
     const key = document.querySelector(`[data-code="${e.code}"]`);
     if (key) key.classList.remove('press');
+    if (
+      (e.code === 'ControlLeft' && this.isAltLeft) ||
+      (e.code === 'AltLeft' && this.isControlLeft)
+    ) {
+      this.language = this.language == 'en' ? 'ru' : 'en';
+      this.keyboard.remove();
+      this.render.renderKeyboard();
+      this.keyboard = this.render.keyboard;
+    }
+    if (e.code === 'AltLeft') {
+      this.isAltLeft = false;
+      console.log('alt - ' + this.isAltLeft);
+      console.log('ctrl - ' + this.isControlLeft);
+    }
+    if (e.code === 'ControlLeft') {
+      this.isControlLeft = false;
+      console.log('ctrl - ' + this.isControlLeft);
+    }
   }
   keyPrint(keyCode) {
     this.textArea.focus();
@@ -85,5 +107,22 @@ export default class Keyboard {
       this.render.renderKeyboard();
       this.keyboard = this.render.keyboard;
     }
+    if (keyCode === 'AltLeft') {
+      this.isAltLeft = true;
+      console.log('alt - ' + this.isAltLeft);
+    }
+    if (keyCode === 'ControlLeft') {
+      this.isControlLeft = true;
+      console.log('ctrl - ' + this.isControlLeft);
+    }
+    // if (
+    //   (keyCode === 'ControlLeft' && this.isAltLeft) ||
+    //   (keyCode === 'AltLeft' && this.isControlLeft)
+    // ) {
+    //   this.language = this.language == 'en' ? 'ru' : 'en';
+    //   this.keyboard.remove();
+    //   this.render.renderKeyboard();
+    //   this.keyboard = this.render.keyboard;
+    // }
   }
 }

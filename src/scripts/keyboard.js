@@ -102,6 +102,8 @@ export default class Keyboard {
       this.render.renderKeyboard();
       this.keyboard = this.render.keyboard;
       this.keyboard.addEventListener('mousedown', this.mouseDownHandler.bind(this));
+      this.keyboard.addEventListener('mouseup', this.mouseUpHandler.bind(this));
+      this.keyboard.addEventListener('mouseout', this.mouseUpHandler.bind(this));
     }
     if (e.code === 'AltLeft') this.isAltLeft = false;
     if (e.code === 'ControlLeft') this.isControlLeft = false;

@@ -20,6 +20,8 @@ export default class Keyboard {
 
   isShiftClicked = false;
 
+  isAltCtrlClicked = false;
+
   constructor() {
     this.loadLanguage();
     this.render = new Render(this.language, keys);
@@ -48,7 +50,9 @@ export default class Keyboard {
 
   mouseDownHandler(e) {
     e.preventDefault();
-
+    if (e.target.dataset.code === 'ControlLeft' || e.target.dataset.code === 'AltLeft') {
+      this.isAltCtrlClicked = true;
+    }
     if (e.target.dataset.code === 'ShiftLeft' || e.target.dataset.code === 'ShiftRight') {
       this.isShiftClicked = true;
     }
@@ -67,6 +71,12 @@ export default class Keyboard {
     ) {
       return;
     }
+    if (
+      (e.target.dataset.code === 'ControlLeft' || e.target.dataset.code === 'AltLeft')
+      && !this.isAltCtrlClicked
+    ) {
+      return;
+    }
     const event = new KeyboardEvent('keyup', {
       code: e.target.dataset.code,
     });
@@ -81,7 +91,7 @@ export default class Keyboard {
     if (keys.hasOwnProperty.call(keys, e.code) && keys[e.code].isFunc === false) {
       this.keyPrint(e.code);
     } else if (e.repeat !== true) this.doFunctionKey(e.code);
-    if (e.repeat === true && (e.code === 'Backspace' || e.code === 'Delete' || e.code === 'Enter')) this.doFunctionKey(e.code);
+    if (e.repeat === true && (e.code === 'Backspace' || e.code === 'Delete' || e.code === 'Enter')) { this.doFunctionKey(e.code); }
     const key = document.querySelector(`[data-code="${e.code}"]`);
 
     if (key) key.classList.add('press');
@@ -107,6 +117,7 @@ export default class Keyboard {
     }
     if (e.code === 'AltLeft') this.isAltLeft = false;
     if (e.code === 'ControlLeft') this.isControlLeft = false;
+    if (e.code === 'ControlLeft' || e.code === 'AltLeft') this.isAltCtrlClicked = false;
     if (e.code === 'ShiftLeft') {
       this.ShiftLeft = false;
       this.shiftHandler();
